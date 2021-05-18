@@ -6,12 +6,19 @@ $dbConn =  connect($db);
 /*
   listar todos los posts o solo uno
  */
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
    if (isset($_GET['id'])) {
       //Mostrar un post
       $sql = $dbConn->prepare("SELECT * FROM usuarios where id_usuario=:id");
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
+
+      echo $_GET['id'];
+
       header("HTTP/1.1 200 OK");
       echo json_encode($sql->fetch(PDO::FETCH_ASSOC));
       exit();
@@ -20,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $sql = $dbConn->prepare("SELECT * FROM usuarios");
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
+
       header("HTTP/1.1 200 OK");
       echo json_encode($sql->fetchAll());
       exit();
