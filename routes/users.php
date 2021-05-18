@@ -11,13 +11,14 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+   echo $_GET['id'];
    if (isset($_GET['id'])) {
       //Mostrar un post
       $sql = $dbConn->prepare("SELECT * FROM usuarios where id_usuario=:id");
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
 
-      echo $_GET['id'];
+      
 
       header("HTTP/1.1 200 OK");
       header('Content-Type: application/json');
