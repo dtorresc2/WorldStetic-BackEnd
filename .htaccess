@@ -7,5 +7,5 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 
-RewriteRule ^usuarios/(.*)$ /routes/users.php?id=$1 [L]
+RewriteRule ^usuarios/(.*)$ routes/users.php?id=$1 [L]
 #RewriteRule ^([a-z]{2,2})/([a-zA-Z0-9_-]+)$ index.php?lang=$1&page=$2 [QSA]
