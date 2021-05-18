@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
       header("HTTP/1.1 200 OK");
-      header('Content-Type: application/json');
       echo json_encode($sql->fetch(PDO::FETCH_ASSOC));
       exit();
    } else {
@@ -22,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
       header("HTTP/1.1 200 OK");
-      header('Content-Type: application/json');
       echo json_encode($sql->fetchAll());
       exit();
    }
