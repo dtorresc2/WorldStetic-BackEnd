@@ -1,7 +1,0 @@
-{
-   "name": "vlucas/phpdotenv",
-   "description": "API WES",
-   "require": {
-      "vlucas/phpdotenv": "^4.1"
-   }
-}
