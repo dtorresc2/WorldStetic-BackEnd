@@ -1,14 +1,14 @@
 <?php
 //Get Heroku ClearDB connection information
 $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-$cleardb_server = parse_url(getenv("SERVER"));
-$cleardb_username = parse_url(getenv("USERNAME"));
-$cleardb_password = parse_url(getenv("PASSWORD"));
-$cleardb_db = parse_url(getenv("DB"));
-// $cleardb_server = $cleardb_url["host"];
-// $cleardb_username = $cleardb_url["user"];
-// $cleardb_password = $cleardb_url["pass"];
-// $cleardb_db = substr($cleardb_url["path"], 1);
+// $cleardb_server = parse_url(getenv("SERVER"));
+// $cleardb_username = parse_url(getenv("USERNAME"));
+// $cleardb_password = parse_url(getenv("PASSWORD"));
+// $cleardb_db = parse_url(getenv("DB"));
+$cleardb_server = $cleardb_url["SERVER"];
+$cleardb_username = $cleardb_url["USERNAME"];
+$cleardb_password = $cleardb_url["PASSWORD"];
+$cleardb_db = substr($cleardb_url["DB"], 1);
 $active_group = 'default';
 $query_builder = TRUE;
 echo 'Llegue aca '.$cleardb_server;
