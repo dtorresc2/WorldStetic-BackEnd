@@ -4,7 +4,6 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 #Usuarios
+RewriteRule ^usuarios/$ routes/users.php [L]
 RewriteRule usuarios/(.*)$ routes/users.php?id=$1 [QSA,NC,L]
-RewriteRule usuarios routes/users.php
-
 </IfModule>
