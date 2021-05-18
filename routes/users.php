@@ -6,7 +6,7 @@ $dbConn =  connect($db);
 /*
   listar todos los posts o solo uno
  */
-header('Content-Type: application/json');
+
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
 
@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       echo $_GET['id'];
 
       header("HTTP/1.1 200 OK");
+      header('Content-Type: application/json');
       echo json_encode($sql->fetch(PDO::FETCH_ASSOC));
       exit();
    } else {
