@@ -4,6 +4,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 #Ruta para usuarios
 RewriteRule ^usuarios/(.*)$ routes/usuarios.php?id=$1 [QSA,NC,L]
+RewriteRule ^usuarios/auth/(.*)$ routes/autenticacion.php?auth=$1 [QSA,NC,L]
 RewriteRule usuarios routes/usuarios.php [QSA,NC,L]
 
 #Ruta para servicios
