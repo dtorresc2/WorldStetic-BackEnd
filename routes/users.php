@@ -9,10 +9,15 @@ header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-   $identificador = $_GET['id'];
    if (isset($_GET['id'])) {
       //Mostrar un post
-      $sql = $dbConn->prepare("SELECT * FROM usuarios where id_usuario=:id");
+      $sql = $dbConn->prepare(
+         "SELECT ". 
+         "id_usuario AS ID_USUARIO, ".
+         "usuario AS USUARIO ".
+         "FROM usuarios ".
+         "where id_usuario=:id"
+      );
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
 
@@ -21,7 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       exit();
    } else {
       //Mostrar lista de post
-      $sql = $dbConn->prepare("SELECT * FROM usuarios");
+      $sql = $dbConn->prepare(
+         "SELECT ". 
+         "id_usuario AS ID_USUARIO, ".
+         "usuario AS USUARIO ".
+         "FROM usuarios "
+      );
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
 
