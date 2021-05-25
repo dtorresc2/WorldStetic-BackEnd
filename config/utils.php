@@ -28,7 +28,8 @@ function getParams($input)
 function bindAllValues($statement, $params)
 {
    foreach ($params as $param => $value) {
-      $statement->bindValue(':' . $param, $value);
+      $statement->bindValue(':'.$param, $value);
+      echo $statement;
    }
    return $statement;
 }
