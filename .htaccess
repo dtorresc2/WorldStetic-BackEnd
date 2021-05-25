@@ -1,8 +1,11 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^usuarios/(.*)$ routes/users.php?id=$1 [QSA,NC,L]
-RewriteRule usuarios routes/users.php [QSA,NC,L]
 
+#Ruta para usuarios
+RewriteRule ^usuarios/(.*)$ routes/usuarios.php?id=$1 [QSA,NC,L]
+RewriteRule usuarios routes/usuarios.php [QSA,NC,L]
+
+#Ruta para servicios
 RewriteRule ^servicios/(.*)$ routes/servicios.php?id=$1 [QSA,NC,L]
 RewriteRule servicios routes/servicios.php [QSA,NC,L]
