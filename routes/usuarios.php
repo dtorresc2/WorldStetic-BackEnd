@@ -95,21 +95,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-   $input = file_get_contents('php://input');
-   $input = json_decode($input, true);
+// if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+//    if (isset($_GET['id'])) {
+//       $input = file_get_contents('php://input');
+//       $input = json_decode($input, true);
 
-   if (password_verify('hola', $input['PASS'])) {
-      /* Valid */
-      echo 'Si';
-   } else {
-      /* Invalid */
-      echo 'No';
-   }
+//       if ($_GET['id'] == 0) {
+//          $sql = "UPDATE usuarios SET 
+//          usuario = :USUARIO
+//          WHERE id_usuario = :ID_USUARIO";
 
-   header("HTTP/1.1 200 OK");
-   exit();
-}
+//          $stmt = $dbConn->prepare($sql);
+//          $stmt->bindParam(':DESCRIPCION', $input['DESCRIPCION'], PDO::PARAM_STR);
+//          $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
+//          $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
+//          $stmt->bindParam(':ID_SERVICIO', $id, PDO::PARAM_INT);
+//          $stmt->execute();
+//       }
+
+//       if ($_GET['id'] == 1) {
+
+//       }
+
+
+//       header("HTTP/1.1 200 OK");
+//       exit();
+//    }
+// }
 
 // if (password_verify($password, $hash)) {
 //    /* Valid */
