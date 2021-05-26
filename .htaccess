@@ -3,10 +3,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 #Ruta para usuarios
-RewriteRule ^usuarios/(.*)$ routes/usuarios.php?id=$1 [QSA,NC,L]
-RewriteRule ^usuarios/auth/(.*)$ routes/autenticacion.php?auth=$1 [QSA,NC,L]
+RewriteRule ^usuarios/([0-9]+)$ routes/usuarios.php?id=$1 [QSA,NC,L]
+RewriteRule usuarios/auth routes/autenticacion.php? [QSA,NC,L]
 RewriteRule usuarios routes/usuarios.php [QSA,NC,L]
 
 #Ruta para servicios
-RewriteRule ^servicios/(.*)$ routes/servicios.php?id=$1 [QSA,NC,L]
+RewriteRule ^servicios/([0-9]+)$ routes/servicios.php?id=$1 [QSA,NC,L]
+#RewriteRule ^servicios/(.*)$ routes/servicios.php?id=$1 [QSA,NC,L]
 RewriteRule servicios routes/servicios.php [QSA,NC,L]

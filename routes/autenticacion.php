@@ -15,36 +15,29 @@ $mensaje = array(
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-   if (isset($_GET['auth'])) {
-      if ($_GET['auth'] == 'registrar') {
-         $input = file_get_contents('php://input');
-         $input = json_decode($input, true);
 
-         // $hash = password_hash($input['PASS'], PASSWORD_BCRYPT);
-         $hash = password_hash('hola', PASSWORD_BCRYPT);
-         $mensaje['ESTADO'] = $hash;
+   // $input = file_get_contents('php://input');
+   // $input = json_decode($input, true);
 
-         header("HTTP/1.1 200 OK");
+   $hash = password_hash('hola', PASSWORD_BCRYPT);
+   // $mensaje['ESTADO'] = $hash;
 
-         echo $hash;
-         exit();
-      }
+   header("HTTP/1.1 200 OK");
 
-      if ($_GET['auth'] == 'ingresar') {
-         $input = file_get_contents('php://input');
-         $input = json_decode($input, true);
+   echo $hash;
+   exit();
 
-         header("HTTP/1.1 200 OK");
+   // $input = file_get_contents('php://input');
+   // $input = json_decode($input, true);
 
-         if (password_verify('hola', $input['PASS'])) {
-            echo 'Si';
-         } else {
-            echo 'No';
-         }
-         
-         exit();
-      }
-   }
+   // header("HTTP/1.1 200 OK");
+
+   // if (password_verify('hola', $input['PASS'])) {
+   //    echo 'Si';
+   // } else {
+   //    echo 'No';
+   // }
+
 }
 
 header("HTTP/1.1 400 Bad Request");
