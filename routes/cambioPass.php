@@ -24,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
       $sql = "UPDATE usuarios SET 
          password = :PASSWORD
          WHERE id_usuario = :ID_USUARIO";
-      
+
       $hash = password_hash($input['PASSWORD'], PASSWORD_BCRYPT);
 
       $stmt = $dbConn->prepare($sql);
-      $stmt->bindParam(':USUARIO', $hash, PDO::PARAM_STR);
+      $stmt->bindParam(':PASSWORD', $hash, PDO::PARAM_STR);
       $stmt->bindParam(':ID_USUARIO', $_GET['id'], PDO::PARAM_INT);
       $stmt->execute();
 
