@@ -2,7 +2,7 @@
 include "../../config/config.php";
 include "../../config/utils.php";
 
-include '../../lib/password.php';
+include '../../lib/Password_Compat/password.php';
 
 $dbConn = connect($db);
 

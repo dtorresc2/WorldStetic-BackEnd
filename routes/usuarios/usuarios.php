@@ -2,7 +2,7 @@
 include "../../config/config.php";
 include "../../config/utils.php";
 
-include '../../lib/password.php';
+include '../../lib/Password_Compat/password.php';
 
 $dbConn = connect($db);
 
@@ -94,11 +94,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    }
    exit();
 }
-// if (password_verify($password, $hash)) {
-//    /* Valid */
-// } else {
-//    /* Invalid */
-// }
-
 // https://stackoverflow.com/questions/8291712/using-clean-urls-in-restful-api
 // https://codigonaranja.com/crear-restful-web-service-php
