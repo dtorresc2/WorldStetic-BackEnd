@@ -132,25 +132,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
       $input = file_get_contents('php://input');
       $input = json_decode($input, true);
 
-      // nombre AS NOMBRE, 
-      // nit AS NIT, 
-      // DATE_FORMAT(fecha_nacimiento,'%d/%m/%Y') AS FECHA_NACIMIENTO,
-      // direccion AS DIRECCION,
-      // correo AS CORREO,
-      // telefono AS TELEFONO,
-      // estado AS ESTADO
-
       $sql = "UPDATE clientes SET 
-         descripcion = :DESCRIPCION, 
-         monto = :MONTO, 
-         estado = :ESTADO 
-      WHERE id_servicio = :ID_SERVICIO";
+         nombre = :NOMBRE, 
+         nit = :NIT, 
+         fecha_nacimiento = :FECHA_NACIMIENTO,
+         direccion = :DIRECCION,
+         correo = :CORREO,
+         telefono = :TELEFONO,
+         estado = :ESTADO
+      WHERE id_cliente = :ID_CLIENTE";
 
       $stmt = $dbConn->prepare($sql);
-      $stmt->bindParam(':DESCRIPCION', $input['DESCRIPCION'], PDO::PARAM_STR);
-      $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
+      $stmt->bindParam(':NOMBRE', $input['NOMBRE'], PDO::PARAM_STR);
+      $stmt->bindParam(':NIT', $input['NIT'], PDO::PARAM_STR);
+      $stmt->bindParam(':FECHA_NACIMIENTO', $input['FECHA_NACIMIENTO'], PDO::PARAM_STR);
+      $stmt->bindParam(':DIRECCION', $input['DIRECCION'], PDO::PARAM_STR);
+      $stmt->bindParam(':CORREO', $input['CORREO'], PDO::PARAM_STR);
+      $stmt->bindParam(':TELEFONO', $input['TELEFONO'], PDO::PARAM_STR);
       $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
-      $stmt->bindParam(':ID_SERVICIO', $id, PDO::PARAM_INT);
+      $stmt->bindParam(':ID_CLIENTE', $id, PDO::PARAM_INT);
       $stmt->execute();
 
       header("HTTP/1.1 200 OK");
@@ -163,3 +163,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
       exit();
    }
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+   if (isset($_GET['id'])) {
+      $input = $_GET;
+      $id = $input['id'];
+
+      $sql = "DELETE FROM clientes
+      WHERE id_cliente = :ID_CLIENTE";
+
+      $stmt = $dbConn->prepare($sql);
+      $stmt->bindParam(':ID_CLIENTE', $id, PDO::PARAM_INT);
+      $stmt->execute();
+
+      header("HTTP/1.1 200 OK");
+
+      $mensaje['ESTADO'] = 1;
+      $mensaje['MENSAJE'] = "Eliminado Correctamente";
+      $mensaje['ID'] = $id;
+
+      echo json_encode($mensaje);
+      exit();
+   }
+}
+
+header("HTTP/1.1 400 Bad Request");

@@ -89,54 +89,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-   $input = $_GET;
-   $id = $input['id'];
+   if (isset($_GET['id'])) {
+      $input = $_GET;
+      $id = $input['id'];
 
-   $input = file_get_contents('php://input');
-   $input = json_decode($input, true);
+      $input = file_get_contents('php://input');
+      $input = json_decode($input, true);
 
-   $sql = "UPDATE servicios SET 
+      $sql = "UPDATE servicios SET 
          descripcion = :DESCRIPCION, 
          monto = :MONTO, 
          estado = :ESTADO 
       WHERE id_servicio = :ID_SERVICIO";
 
-   $stmt = $dbConn->prepare($sql);
-   $stmt->bindParam(':DESCRIPCION', $input['DESCRIPCION'], PDO::PARAM_STR);
-   $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
-   $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
-   $stmt->bindParam(':ID_SERVICIO', $id, PDO::PARAM_INT);
-   $stmt->execute();
+      $stmt = $dbConn->prepare($sql);
+      $stmt->bindParam(':DESCRIPCION', $input['DESCRIPCION'], PDO::PARAM_STR);
+      $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
+      $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
+      $stmt->bindParam(':ID_SERVICIO', $id, PDO::PARAM_INT);
+      $stmt->execute();
 
-   header("HTTP/1.1 200 OK");
+      header("HTTP/1.1 200 OK");
 
-   $mensaje['ESTADO'] = 1;
-   $mensaje['MENSAJE'] = "Actualizado Correctamente";
-   $mensaje['ID'] = $id;
+      $mensaje['ESTADO'] = 1;
+      $mensaje['MENSAJE'] = "Actualizado Correctamente";
+      $mensaje['ID'] = $id;
 
-   echo json_encode($mensaje);
-   exit();
+      echo json_encode($mensaje);
+      exit();
+   }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-   $input = $_GET;
-   $id = $input['id'];
+   if (isset($_GET['id'])) {
+      $input = $_GET;
+      $id = $input['id'];
 
-   $sql = "DELETE FROM servicios
+      $sql = "DELETE FROM servicios
       WHERE id_servicio = :ID_SERVICIO";
 
-   $stmt = $dbConn->prepare($sql);
-   $stmt->bindParam(':ID_SERVICIO', $id, PDO::PARAM_INT);
-   $stmt->execute();
+      $stmt = $dbConn->prepare($sql);
+      $stmt->bindParam(':ID_SERVICIO', $id, PDO::PARAM_INT);
+      $stmt->execute();
 
-   header("HTTP/1.1 200 OK");
+      header("HTTP/1.1 200 OK");
 
-   $mensaje['ESTADO'] = 1;
-   $mensaje['MENSAJE'] = "Eliminado Correctamente";
-   $mensaje['ID'] = $id;
+      $mensaje['ESTADO'] = 1;
+      $mensaje['MENSAJE'] = "Eliminado Correctamente";
+      $mensaje['ID'] = $id;
 
-   echo json_encode($mensaje);
-   exit();
+      echo json_encode($mensaje);
+      exit();
+   }
 }
 
 header("HTTP/1.1 400 Bad Request");

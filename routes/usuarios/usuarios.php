@@ -94,5 +94,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    }
    exit();
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+   if (isset($_GET['id'])) {
+      $input = $_GET;
+      $id = $input['id'];
+
+      $sql = "DELETE FROM usuarios
+      WHERE id_usuario = :ID_USUARIO";
+
+      $stmt = $dbConn->prepare($sql);
+      $stmt->bindParam(':ID_USUARIO', $id, PDO::PARAM_INT);
+      $stmt->execute();
+
+      header("HTTP/1.1 200 OK");
+
+      $mensaje['ESTADO'] = 1;
+      $mensaje['MENSAJE'] = "Eliminado Correctamente";
+      $mensaje['ID'] = $id;
+
+      echo json_encode($mensaje);
+      exit();
+   }
+}
+
+header("HTTP/1.1 400 Bad Request");
 // https://stackoverflow.com/questions/8291712/using-clean-urls-in-restful-api
 // https://codigonaranja.com/crear-restful-web-service-php
