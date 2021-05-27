@@ -3,13 +3,13 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 #Ruta para usuarios
-RewriteRule ^usuarios/([0-9]+)$ routes/usuarios.php?id=$1 [QSA,NC,L]
-RewriteRule usuarios/auth routes/autenticacion.php [QSA,NC,L]
-RewriteRule ^usuarios/user/([0-9]+)$ routes/cambioUsuario.php?id=$1  [QSA,NC,L]
-RewriteRule ^usuarios/pass/([0-9]+)$ routes/cambioPass.php?id=$1  [QSA,NC,L]
-RewriteRule usuarios routes/usuarios.php [QSA,NC,L]
+RewriteRule ^usuarios/([0-9]+)$ routes/usuarios/usuarios.php?id=$1 [QSA,NC,L]
+RewriteRule usuarios/auth routes/usuarios/autenticacion.php [QSA,NC,L]
+RewriteRule ^usuarios/user/([0-9]+)$ routes/usuarios/cambioUsuario.php?id=$1  [QSA,NC,L]
+RewriteRule ^usuarios/pass/([0-9]+)$ routes/usuarios/cambioPass.php?id=$1  [QSA,NC,L]
+RewriteRule usuarios routes/usuarios/usuarios.php [QSA,NC,L]
 
 #Ruta para servicios
-RewriteRule ^servicios/([0-9]+)$ routes/servicios.php?id=$1 [QSA,NC,L]
-#RewriteRule ^servicios/(.*)$ routes/servicios.php?id=$1 [QSA,NC,L]
-RewriteRule servicios routes/servicios.php [QSA,NC,L]
+RewriteRule ^servicios/([0-9]+)$ routes/servicios/servicios.php?id=$1 [QSA,NC,L]
+#RewriteRule ^servicios/(.*)$ routes/servicios/servicios.php?id=$1 [QSA,NC,L]
+RewriteRule servicios routes/servicios/servicios.php [QSA,NC,L]

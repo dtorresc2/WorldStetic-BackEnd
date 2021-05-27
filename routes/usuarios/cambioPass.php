@@ -1,8 +1,8 @@
 <?php
-include "../config/config.php";
-include "../config/utils.php";
+include "../../config/config.php";
+include "../../config/utils.php";
 
-include '../lib/password.php';
+include '../../lib/password.php';
 
 $dbConn = connect($db);
 
