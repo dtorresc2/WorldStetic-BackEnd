@@ -13,3 +13,5 @@ RewriteRule usuarios routes/usuarios/usuarios.php [QSA,NC,L]
 RewriteRule ^servicios/([0-9]+)$ routes/servicios/servicios.php?id=$1 [QSA,NC,L]
 #RewriteRule ^servicios/(.*)$ routes/servicios/servicios.php?id=$1 [QSA,NC,L]
 RewriteRule servicios routes/servicios/servicios.php [QSA,NC,L]
+
+#Ruta para clientes
