@@ -5,11 +5,11 @@ include "../../config/utils.php";
 $dbConn = connect($db);
 
 // header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type, Access-Control-Allow-Methods');
+header('Access-Control-Allow-Headers','Content-Type, Authorization, Access-Control-Allow-Origin, Access-Control-Allow-Methods');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Credentials', 'true');
-header('Access-Control-Allow-Headers','Content-Type, Authorization, Access-Control-Allow-Origin, Access-Control-Allow-Methods');
 
 
 $mensaje = array(
