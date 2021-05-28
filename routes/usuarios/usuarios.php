@@ -6,8 +6,9 @@ include '../../lib/Password_Compat/password.php';
 
 $dbConn = connect($db);
 
+header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type, Access-Control-Allow-Methods');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
+header('Access-Control-Allow-Methods: *');
 header('Content-Type: application/json');
 
 $mensaje = array(
