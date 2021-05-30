@@ -56,7 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    echo json_encode($mensaje);
    exit();
 }
-else {
-   header("HTTP/1.1 400 Bad Request");
-   exit();
-}
+// else {
+//    header("HTTP/1.1 400 Bad Request");
+//    exit();
+// }
+header("HTTP/1.1 400 Bad Request");
+exit();

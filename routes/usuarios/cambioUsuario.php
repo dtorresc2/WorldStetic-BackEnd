@@ -2,7 +2,7 @@
 include "../../config/config.php";
 include "../../config/utils.php";
 
-include '../../lib/Password_Compat/password.php';
+// include '../../lib/Password_Compat/password.php';
 
 $dbConn = connect($db);
 
@@ -14,8 +14,9 @@ $mensaje = array(
 
 header('Access-Control-Allow-Headers: Access-Control-Allow-Origin, Content-Type, Access-Control-Allow-Methods');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: *');
+header('Access-Control-Allow-Methods: PUT');
 header('Content-Type: application/json');
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
    if (isset($_GET['id'])) {
@@ -31,18 +32,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
       $stmt->bindParam(':ID_USUARIO', $_GET['id'], PDO::PARAM_INT);
       $stmt->execute();
 
+      $ID = $_GET['id'];
 
       header("HTTP/1.1 200 OK");
 
       $mensaje['ESTADO'] = 1;
       $mensaje['MENSAJE'] = "Actualizado Correctamente";
-      $mensaje['ID'] = $_GET['id'];
+      $mensaje['ID'] = $ID;
 
       echo json_encode($mensaje);
       exit();
    }
 }
-else {
-   header("HTTP/1.1 400 Bad Request");
-   exit();
-}
+// else {
+//    header("HTTP/1.1 400 Bad Request");
+//    exit();
+// }
+header("HTTP/1.1 400 Bad Request");
+exit();
