@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
       exit();
    }
 }
-header("HTTP/1.1 400 Bad Request");
-exit();
+// header("HTTP/1.1 400 Bad Request");
+// exit();
 // https://stackoverflow.com/questions/8291712/using-clean-urls-in-restful-api
 // https://codigonaranja.com/crear-restful-web-service-php
