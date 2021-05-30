@@ -43,5 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
       exit();
    }
 }
-
-header("HTTP/1.1 400 Bad Request");
+else {
+   header("HTTP/1.1 400 Bad Request");
+   exit();
+}
