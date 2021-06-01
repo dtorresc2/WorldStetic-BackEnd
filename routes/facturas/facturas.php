@@ -21,6 +21,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $input = json_decode($input, true);
 
       switch ($_GET['proceso']) {
+         case 'registrar':
+            $sql = "INSERT INTO factura_encabezado (
+               serie, 
+               numero_factura,
+               nombre_factura,
+               direccion_factura,
+               monto,
+               iva,
+               monto_sin_iva,
+               fecha_creacion,
+               fecha_emision,
+               estado,
+               contado_credito,
+               id_cliente,
+               id_usuario,
+               saldo_anterior,
+               debe,
+               haber,
+               saldo_actual
+            ) 
+            VALUES(
+               :SERIE, 
+               :NUMERO_FACTURA,
+               :NOMBRE_FACTURA,
+               :DIRECCION_FACTURA,
+               :MONTO,
+               :IVA,
+               :MONTO_SIN_IVA,
+               (SELECT CONVERT_TZ(now(),'+00:00','-06:00')),
+               :FECHA_EMISION,
+               :ESTADO,
+               :CONTADO_CREDITO,
+               :ID_CLIENTE,
+               :ID_USUARIO,
+               0,
+               0,
+               0,
+               0
+               )";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':SERIE', $input['SERIE'], PDO::PARAM_STR);
+            $stmt->bindParam(':NUMERO_FACTURA', $input['NUMERO_FACTURA'], PDO::PARAM_INT);
+            $stmt->bindParam(':NOMBRE_FACTURA', $input['NOMBRE_FACTURA'], PDO::PARAM_STR);
+            $stmt->bindParam(':DIRECCION_FACTURA', $input['DIRECCION_FACTURA'], PDO::PARAM_STR);
+            $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
+            $stmt->bindParam(':IVA', $input['IVA'], PDO::PARAM_INT);
+            $stmt->bindParam(':MONTO_SIN_IVA', $input['MONTO_SIN_IVA'], PDO::PARAM_INT);
+
+            $stmt->bindParam(':FECHA_EMISION', $input['FECHA_EMISION'], PDO::PARAM_STR);
+            $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
+            $stmt->bindParam(':CONTADO_CREDITO', $input['CONTADO_CREDITO'], PDO::PARAM_INT);
+            $stmt->bindParam(':ID_CLIENTE', $input['ID_CLIENTE'], PDO::PARAM_INT);
+            $stmt->bindParam(':ID_USUARIO', $input['ID_USUARIO'], PDO::PARAM_INT);
+            $stmt->execute();
+            $postId = $dbConn->lastInsertId();
+
+            if ($postId) {
+               $respuesta['id'] = $postId;
+               header("HTTP/1.1 200 OK");
+
+               $mensaje['ESTADO'] = 1;
+               $mensaje['MENSAJE'] = "Creado Correctamente";
+               $mensaje['ID'] = $respuesta['id'];
+
+               echo json_encode($mensaje);
+               exit();
+            }
+
+            break;
          case 'listar':
             if ($input['ID_FACTURA'] > 0) {
                $sql = $dbConn->prepare(
