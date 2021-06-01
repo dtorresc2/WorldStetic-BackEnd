@@ -154,6 +154,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                exit();
             }
             break;
+
+         case 'actualizar':
+            $sql = "UPDATE factura_encabezado SET 
+               serie = :SERIE, 
+               numero_factura = :NUMERO_FACTURA, 
+               nombre_factura = :NOMBRE_FACTURA,
+               direccion_factura = :DIRECCION,
+               monto = :MONTO,
+               iva = :IVA,
+               monto_sin_iva = :MONTO_SIN_IVA,
+               fecha_emision = :FECHA_EMISION,
+               estado = :ESTADO,
+               contado_credito = :CONTADO_CREDITO,
+               id_cliente = :ID_CLIENTE,
+               id_usuario = :ID_USUARIO
+            WHERE id_factura = :ID_FACTURA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':SERIE', $input['SERIE'], PDO::PARAM_STR);
+            $stmt->bindParam(':NUMERO_FACTURA', $input['NUMERO_FACTURA'], PDO::PARAM_INT);
+            $stmt->bindParam(':NOMBRE_FACTURA', $input['NOMBRE_FACTURA'], PDO::PARAM_STR);
+            $stmt->bindParam(':DIRECCION', $input['DIRECCION'], PDO::PARAM_STR);
+            $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
+            $stmt->bindParam(':IVA', $input['IVA'], PDO::PARAM_INT);
+            $stmt->bindParam(':MONTO_SIN_IVA', $input['MONTO_SIN_IVA'], PDO::PARAM_INT);
+            $stmt->bindParam(':FECHA_EMISION', $input['FECHA_EMISION'], PDO::PARAM_STR);
+            $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
+            $stmt->bindParam(':CONTADO_CREDITO', $input['CONTADO_CREDITO'], PDO::PARAM_INT);
+            $stmt->bindParam(':ID_CLIENTE', $input['ID_CLIENTE'], PDO::PARAM_INT);
+            $stmt->bindParam(':ID_USUARIO', $input['ID_USUARIO'], PDO::PARAM_INT);
+            $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Actualizado Correctamente";
+            $mensaje['ID'] = $input['ID_FACTURA'];
+
+            echo json_encode($mensaje);
+            exit();
+
+            break;
+
+         case 'eliminar':
+            $sql = "DELETE FROM factura_encabezado
+            WHERE id_factura = :ID_FACTURA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_CLIENTE', $input['ID_FACTURA'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Eliminado Correctamente";
+            $mensaje['ID'] = $input['ID_FACTURA'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
       }
    }
 }
