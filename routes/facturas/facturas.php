@@ -203,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             WHERE id_factura = :ID_FACTURA";
 
             $stmt = $dbConn->prepare($sql);
-            $stmt->bindParam(':ID_CLIENTE', $input['ID_FACTURA'], PDO::PARAM_INT);
+            $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
             $stmt->execute();
 
             header("HTTP/1.1 200 OK");
