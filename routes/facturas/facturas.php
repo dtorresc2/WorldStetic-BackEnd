@@ -61,15 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                0
                )";
 
+            $montoSinIva = ($input['MONTO'] / 1.12);
+            $IVA = ($input['MONTO'] * 0.12);
+
             $stmt = $dbConn->prepare($sql);
             $stmt->bindParam(':SERIE', $input['SERIE'], PDO::PARAM_STR);
             $stmt->bindParam(':NUMERO_FACTURA', $input['NUMERO_FACTURA'], PDO::PARAM_INT);
             $stmt->bindParam(':NOMBRE_FACTURA', $input['NOMBRE_FACTURA'], PDO::PARAM_STR);
             $stmt->bindParam(':DIRECCION_FACTURA', $input['DIRECCION_FACTURA'], PDO::PARAM_STR);
             $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
-            $stmt->bindParam(':IVA', $input['IVA'], PDO::PARAM_INT);
-            $stmt->bindParam(':MONTO_SIN_IVA', $input['MONTO_SIN_IVA'], PDO::PARAM_INT);
-
+            $stmt->bindParam(':IVA', $IVA, PDO::PARAM_INT);
+            $stmt->bindParam(':MONTO_SIN_IVA', $montoSinIva, PDO::PARAM_INT);
             $stmt->bindParam(':FECHA_EMISION', $input['FECHA_EMISION'], PDO::PARAM_STR);
             $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
             $stmt->bindParam(':CONTADO_CREDITO', $input['CONTADO_CREDITO'], PDO::PARAM_INT);
@@ -80,6 +82,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($postId) {
                $respuesta['id'] = $postId;
+
+               // Registrar Factura
+               $lent = sizeof($input['DETALLE']);
+
+               for ($i = 0; $i < $lent; $i++) {
+                  // echo json_encode($input['DETALLE'][$i]);
+                  $sql = "INSERT INTO factura_detalle (
+                     id_detalle, 
+                     id_factura,
+                     id_servicio,
+                     cantidad,
+                     bien_servicio,
+                     descripcion,
+                     monto_unitario,
+                     monto,
+                     iva,
+                     monto_sin_iva
+                  ) 
+                  VALUES(
+                     :ID_DETALLE, 
+                     :ID_FACTURA,
+                     :ID_SERVICIO,
+                     :CANTIDAD,
+                     :BIEN_SERVICIO,
+                     :DESCRIPCION,
+                     :MONTO_UNITARIO,
+                     :MONTO,
+                     :IVA,
+                     :MONTO_SIN_IVA
+                     )";
+
+                  $cont = ($i + 1);
+                  $montoSinIva = ($input['DETALLE'][$i]['MONTO'] / 1.12);
+                  $IVA = ($input['DETALLE'][$i]['MONTO'] * 0.12);
+
+                  $stmt = $dbConn->prepare($sql);
+                  $stmt->bindParam(':ID_DETALLE', $cont, PDO::PARAM_INT);
+                  $stmt->bindParam(':ID_FACTURA', $postId, PDO::PARAM_INT);
+                  $stmt->bindParam(':ID_SERVICIO', $input['DETALLE'][$i]['ID_SERVICIO'], PDO::PARAM_INT);
+                  $stmt->bindParam(':CANTIDAD', $input['DETALLE'][$i]['CANTIDAD'], PDO::PARAM_INT);
+                  $stmt->bindParam(':BIEN_SERVICIO', $input['DETALLE'][$i]['BIEN_SERVICIO'], PDO::PARAM_STR);
+                  $stmt->bindParam(':DESCRIPCION', $input['DETALLE'][$i]['DESCRIPCION'], PDO::PARAM_STR);
+                  $stmt->bindParam(':MONTO_UNITARIO', $input['DETALLE'][$i]['MONTO_UNITARIO'], PDO::PARAM_INT);
+                  $stmt->bindParam(':MONTO', $input['DETALLE'][$i]['MONTO'], PDO::PARAM_INT);
+                  $stmt->bindParam(':IVA', $IVA, PDO::PARAM_INT);
+                  $stmt->bindParam(':MONTO_SIN_IVA', $montoSinIva, PDO::PARAM_INT);
+                  $stmt->execute();
+                  #$postId = $dbConn->lastInsertId();
+               }
+
                header("HTTP/1.1 200 OK");
 
                $mensaje['ESTADO'] = 1;

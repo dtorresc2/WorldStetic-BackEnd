@@ -21,3 +21,4 @@ RewriteRule clientes routes/clientes/clientes.php [QSA,NC,L]
 
 #Ruta para facturas
 RewriteRule ^facturas/([a-zA-Z]+)$ routes/facturas/facturas.php?proceso=$1 [QSA,NC,L]
+RewriteRule ^facturas-detalle/([a-zA-Z]+)$ routes/facturas/facturaDetalle.php?proceso=$1 [QSA,NC,L]
