@@ -320,6 +320,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
 
          case 'eliminar':
+            $sql = "DELETE FROM factura_detalle
+            WHERE id_factura = :ID_FACTURA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
+            $stmt->execute();
+            
             $sql = "DELETE FROM factura_encabezado
             WHERE id_factura = :ID_FACTURA";
 
