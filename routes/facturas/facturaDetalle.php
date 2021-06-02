@@ -22,51 +22,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       switch ($_GET['proceso']) {
          case 'listar':
-
             $sql = $dbConn->prepare(
                "SELECT 
-                  fact.id_factura AS ID_FACTURA,
-                  fact.serie AS SERIE,
-                  fact.numero_factura AS NUMERO_FACTURA,
-                  fact.nombre_factura AS NOMBRE_FACTURA,
-                  fact.direccion_factura AS DIRECCION_FACTURA,
-                  fact.monto AS MONTO,
-                  fact.iva AS IVA,
-                  fact.monto_sin_iva AS MONTO_SIN_IVA,
-                  DATE_FORMAT(fact.fecha_creacion, '%d/%m/%Y') AS FECHA_CREACION,
-                  DATE_FORMAT(fact.fecha_emision, '%d/%m/%Y') AS FECHA_EMISION,
-                  fact.estado AS ESTADO,
-                  fact.contado_credito AS CONTADO_CREDITO,
-                  fact.saldo_anterior AS SALDO_ANTERIOR,
-                  fact.debe AS DEBE,
-                  fact.haber AS HABER,
-                  fact.saldo_actual AS SALDO_ACTUAL,
-                  fact.id_cliente AS ID_CLIENTE,
-                  fact.id_usuario AS ID_USUARIO,
-                  cli.nombre AS NOMBRE_CLIENTE,
-                  cli.nit AS NIT,
-                  cli.telefono AS TELEFONO,
-                  usu.usuario AS USUARIO
-               FROM factura_encabezado fact
-                  LEFT JOIN clientes cli ON fact.id_cliente = cli.id_cliente
-                  LEFT JOIN usuarios usu ON fact.id_usuario = usu.id_usuario
-                  "
+                  id_detalle AS ID_DETALLE,
+                  id_factura AS ID_FACTURA,
+                  id_servicio AS ID_SERVICIO,
+                  cantidad AS CANTIDAD,
+                  bien_servicio AS BIEN_SERVICIO,
+                  descripcion AS DESCRIPCION,
+                  monto_unitario AS MONTO_UNITARIO,
+                  monto AS MONTO,
+                  iva AS IVA,
+                  monto_sin_iva AS MONTO_SIN_IVA
+               FROM factura_detalle
+               WHERE id_factura=:ID_FACTURA
+               ORDER BY id_factura, id_detalle ASC
+               "
             );
+            $sql->bindValue(':ID_FACTURA', $input['ID_FACTURA']);
             $sql->execute();
             $sql->setFetchMode(PDO::FETCH_ASSOC);
-            
+
             header("HTTP/1.1 200 OK");
-            echo json_encode($mensaje);
-            exit();
+            echo json_encode($sql->fetchAll());
             break;
       }
-
-
-      // echo json_encode($input['DETALLE'][0]['ID']);
-      // $lent = sizeof($input['DETALLE']);
-
-      // for ($i = 0; $i < $lent; $i++) {
-      //    echo json_encode($input['DETALLE'][$i]);
-      // }
    }
 }
