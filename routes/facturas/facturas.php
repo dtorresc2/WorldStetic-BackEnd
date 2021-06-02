@@ -95,27 +95,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($input['ID_FACTURA'] > 0) {
                $sql = $dbConn->prepare(
                   "SELECT 
-                     id_factura AS ID_FACTURA, 
-                     serie AS SERIE, 
-                     numero_factura AS NUMERO_FACTURA,
-                     nombre_factura AS NOMBRE_FACTURA,
-                     direccion_factura AS DIRECCION_FACTURA,
-                     monto AS MONTO,
-                     iva AS IVA,
-                     monto_sin_iva AS MONTO_SIN_IVA,
-                     DATE_FORMAT(fecha_creacion,'%d/%m/%Y') AS FECHA_CREACION,
-                     DATE_FORMAT(fecha_emision,'%d/%m/%Y') AS FECHA_EMISION,
-                     estado AS ESTADO,
-                     contado_credito AS CONTADO_CREDITO,
-                     saldo_anterior AS SALDO_ANTERIOR,
-                     debe AS DEBE,
-                     haber AS HABER,
-                     saldo_actual AS SALDO_ACTUAL,
-                     id_cliente AS ID_CLIENTE,
-                     id_usuario AS ID_USUARIO
-                     FROM factura_encabezado 
-                     WHERE id_factura=:ID_FACTURA
-                     "
+                     fact.id_factura AS ID_FACTURA,
+                     fact.serie AS SERIE,
+                     fact.numero_factura AS NUMERO_FACTURA,
+                     fact.nombre_factura AS NOMBRE_FACTURA,
+                     fact.direccion_factura AS DIRECCION_FACTURA,
+                     fact.monto AS MONTO,
+                     fact.iva AS IVA,
+                     fact.monto_sin_iva AS MONTO_SIN_IVA,
+                     DATE_FORMAT(fact.fecha_creacion, '%d/%m/%Y') AS FECHA_CREACION,
+                     DATE_FORMAT(fact.fecha_emision, '%d/%m/%Y') AS FECHA_EMISION,
+                     fact.estado AS ESTADO,
+                     fact.contado_credito AS CONTADO_CREDITO,
+                     fact.saldo_anterior AS SALDO_ANTERIOR,
+                     fact.debe AS DEBE,
+                     fact.haber AS HABER,
+                     fact.saldo_actual AS SALDO_ACTUAL,
+                     fact.id_cliente AS ID_CLIENTE,
+                     fact.id_usuario AS ID_USUARIO,
+                     cli.nombre AS NOMBRE_CLIENTE,
+                     cli.nit AS NIT,
+                     cli.telefono AS TELEFONO,
+                     usu.usuario AS USUARIO
+                  FROM factura_encabezado fact
+                     LEFT JOIN clientes cli ON fact.id_cliente = cli.id_cliente
+                     LEFT JOIN usuarios usu ON fact.id_usuario = usu.id_usuario
+                  WHERE fact.id_factura=:ID_FACTURA
+                  "
                );
                $sql->bindValue(':ID_FACTURA', $input['ID_FACTURA']);
                $sql->execute();
@@ -126,25 +132,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                $sql = $dbConn->prepare(
                   "SELECT 
-                     id_factura AS ID_FACTURA, 
-                     serie AS SERIE, 
-                     numero_factura AS NUMERO_FACTURA,
-                     nombre_factura AS NOMBRE_FACTURA,
-                     direccion_factura AS DIRECCION_FACTURA,
-                     monto AS MONTO,
-                     iva AS IVA,
-                     monto_sin_iva AS MONTO_SIN_IVA,
-                     DATE_FORMAT(fecha_creacion,'%d/%m/%Y') AS FECHA_CREACION,
-                     DATE_FORMAT(fecha_emision,'%d/%m/%Y') AS FECHA_EMISION,
-                     estado AS ESTADO,
-                     contado_credito AS CONTADO_CREDITO,
-                     saldo_anterior AS SALDO_ANTERIOR,
-                     debe AS DEBE,
-                     haber AS HABER,
-                     saldo_actual AS SALDO_ACTUAL,
-                     id_cliente AS ID_CLIENTE,
-                     id_usuario AS ID_USUARIO
-                     FROM factura_encabezado "
+                     fact.id_factura AS ID_FACTURA,
+                     fact.serie AS SERIE,
+                     fact.numero_factura AS NUMERO_FACTURA,
+                     fact.nombre_factura AS NOMBRE_FACTURA,
+                     fact.direccion_factura AS DIRECCION_FACTURA,
+                     fact.monto AS MONTO,
+                     fact.iva AS IVA,
+                     fact.monto_sin_iva AS MONTO_SIN_IVA,
+                     DATE_FORMAT(fact.fecha_creacion, '%d/%m/%Y') AS FECHA_CREACION,
+                     DATE_FORMAT(fact.fecha_emision, '%d/%m/%Y') AS FECHA_EMISION,
+                     fact.estado AS ESTADO,
+                     fact.contado_credito AS CONTADO_CREDITO,
+                     fact.saldo_anterior AS SALDO_ANTERIOR,
+                     fact.debe AS DEBE,
+                     fact.haber AS HABER,
+                     fact.saldo_actual AS SALDO_ACTUAL,
+                     fact.id_cliente AS ID_CLIENTE,
+                     fact.id_usuario AS ID_USUARIO,
+                     cli.nombre AS NOMBRE_CLIENTE,
+                     cli.nit AS NIT,
+                     cli.telefono AS TELEFONO,
+                     usu.usuario AS USUARIO
+                  FROM factura_encabezado fact
+                     LEFT JOIN clientes cli ON fact.id_cliente = cli.id_cliente
+                     LEFT JOIN usuarios usu ON fact.id_usuario = usu.id_usuario
+                     "
                );
                $sql->execute();
                $sql->setFetchMode(PDO::FETCH_ASSOC);
