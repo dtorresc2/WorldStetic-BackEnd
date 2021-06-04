@@ -326,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $dbConn->prepare($sql);
             $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
             $stmt->execute();
-            
+
             $sql = "DELETE FROM factura_encabezado
             WHERE id_factura = :ID_FACTURA";
 
@@ -342,6 +342,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             echo json_encode($mensaje);
             exit();
+            break;
+
+         case 'anular':
+            $sql = "UPDATE factura_encabezado SET 
+               estado = 0,
+               fecha_anulacion = (SELECT CONVERT_TZ(now(),'+00:00','-06:00'))
+            WHERE id_factura = :ID_FACTURA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
+            $stmt->execute();
+            break;
+
+         case 'habilitar':
+            $sql = "UPDATE factura_encabezado SET 
+                  estado = 1
+               WHERE id_factura = :ID_FACTURA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
+            $stmt->execute();
             break;
       }
    }
