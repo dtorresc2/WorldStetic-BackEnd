@@ -353,6 +353,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $dbConn->prepare($sql);
             $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
             $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Anulado Correctamente";
+            $mensaje['ID'] = $input['ID_FACTURA'];
+
+            echo json_encode($mensaje);
+            exit();
             break;
 
          case 'habilitar':
@@ -363,6 +372,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $dbConn->prepare($sql);
             $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
             $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Habilitado Correctamente";
+            $mensaje['ID'] = $input['ID_FACTURA'];
+
+            echo json_encode($mensaje);
+            exit();
             break;
       }
    }
