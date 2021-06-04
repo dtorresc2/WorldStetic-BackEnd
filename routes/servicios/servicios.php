@@ -54,15 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
    if (isset($_GET['id'])) {
-
       $sql = $dbConn->prepare(
-         "SELECT " .
-            " id_servicio AS ID_SERVICIO, " .
-            " descripcion AS DESCRIPCION, " .
-            " monto AS MONTO, " .
-            " estado AS ESTADO " .
-            "FROM servicios " .
-            " WHERE id_servicio=:id"
+         "SELECT 
+            s.id_servicio AS ID_SERVICIO,
+            s.descripcion AS DESCRIPCION,
+            s.monto AS MONTO,
+            s.estado AS ESTADO,
+            IFNULL((SELECT COUNT(*) FROM factura_detalle f WHERE f.id_servicio = s.id_servicio),0) AS NO_DETALLES
+         FROM servicios s
+            WHERE s.id_servicio=:id"
       );
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
@@ -71,14 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       echo json_encode($sql->fetch(PDO::FETCH_ASSOC));
       exit();
    } else {
-
       $sql = $dbConn->prepare(
-         "SELECT " .
-            " id_servicio AS ID_SERVICIO, " .
-            " descripcion AS DESCRIPCION, " .
-            " monto AS MONTO, " .
-            " estado AS ESTADO " .
-            "FROM servicios "
+         "SELECT 
+            s.id_servicio AS ID_SERVICIO,
+            s.descripcion AS DESCRIPCION,
+            s.monto AS MONTO,
+            s.estado AS ESTADO,
+            IFNULL((SELECT COUNT(*) FROM factura_detalle f WHERE f.id_servicio = s.id_servicio),0) AS NO_DETALLES
+         FROM servicios s
+         "
       );
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);

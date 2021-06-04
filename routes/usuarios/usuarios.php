@@ -21,14 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
    if (isset($_GET['id'])) {
       //Mostrar un post
       $sql = $dbConn->prepare(
-         "SELECT " .
-            "id_usuario AS ID_USUARIO, " .
-            "usuario AS USUARIO, " .
-            "password AS PASSWORD, " .
-            "estado AS ESTADO, " .
-            "admin AS ADMIN " .
-            "FROM usuarios " .
-            "where id_usuario=:id"
+         "SELECT SELECT
+            u.id_usuario AS ID_USUARIO,
+            u.usuario AS USUARIO,
+            u.password AS PASSWORD,
+            u.estado AS ESTADO,
+            u.admin AS ADMIN,
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_usuario = u.id_usuario),0) AS NO_DETALLES
+         FROM usuarios u
+         WHERE u.id_usuario=:id"
       );
       $sql->bindValue(':id', $_GET['id']);
       $sql->execute();
@@ -39,13 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
    } else {
       //Mostrar lista de post
       $sql = $dbConn->prepare(
-         "SELECT " .
-            "id_usuario AS ID_USUARIO, " .
-            "usuario AS USUARIO, " .
-            "password AS PASSWORD, " .
-            "estado AS ESTADO, " .
-            "admin AS ADMIN " .
-            "FROM usuarios "
+         "SELECT SELECT
+            u.id_usuario AS ID_USUARIO,
+            u.usuario AS USUARIO,
+            u.password AS PASSWORD,
+            u.estado AS ESTADO,
+            u.admin AS ADMIN,
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_usuario = u.id_usuario),0) AS NO_DETALLES
+         FROM usuarios u"
       );
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);

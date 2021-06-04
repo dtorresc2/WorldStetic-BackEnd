@@ -77,19 +77,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
       $sql = $dbConn->prepare(
          "SELECT
-            id_cliente AS ID_CLIENTE, 
-            nombre AS NOMBRE, 
-            nit AS NIT, 
-            DATE_FORMAT(fecha_nacimiento,'%d/%m/%Y') AS FECHA_NACIMIENTO,
-            direccion AS DIRECCION,
-            correo AS CORREO,
-            telefono AS TELEFONO,
-            saldo_anterior AS SALDO_ANTERIOR,
-            debe AS DEBE,
-            haber AS HABER,
-            saldo_actual AS SALDO_ACTUAL,
-            estado AS ESTADO
-            FROM clientes 
+            cli.id_cliente AS ID_CLIENTE,
+            cli.nombre AS NOMBRE,
+            cli.nit AS NIT,
+            DATE_FORMAT(cli.fecha_nacimiento, '%d/%m/%Y') AS FECHA_NACIMIENTO,
+            cli.direccion AS DIRECCION,
+            cli.correo AS CORREO,
+            cli.telefono AS TELEFONO,
+            cli.saldo_anterior AS SALDO_ANTERIOR,
+            cli.debe AS DEBE,
+            cli.haber AS HABER,
+            cli.saldo_actual AS SALDO_ACTUAL,
+            cli.estado AS ESTADO,
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_cliente = cli.id_cliente),0) AS CONTEO
+         FROM
+            clientes cli
             WHERE id_cliente=:id"
       );
       $sql->bindValue(':id', $_GET['id']);
@@ -102,19 +104,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
       $sql = $dbConn->prepare(
          "SELECT 
-            id_cliente AS ID_CLIENTE, 
-            nombre AS NOMBRE, 
-            nit AS NIT, 
-            DATE_FORMAT(fecha_nacimiento,'%d/%m/%Y') AS FECHA_NACIMIENTO,
-            direccion AS DIRECCION,
-            correo AS CORREO,
-            telefono AS TELEFONO,
-            saldo_anterior AS SALDO_ANTERIOR,
-            debe AS DEBE,
-            haber AS HABER,
-            saldo_actual AS SALDO_ACTUAL,
-            estado AS ESTADO
-            FROM clientes "
+            cli.id_cliente AS ID_CLIENTE,
+            cli.nombre AS NOMBRE,
+            cli.nit AS NIT,
+            DATE_FORMAT(cli.fecha_nacimiento, '%d/%m/%Y') AS FECHA_NACIMIENTO,
+            cli.direccion AS DIRECCION,
+            cli.correo AS CORREO,
+            cli.telefono AS TELEFONO,
+            cli.saldo_anterior AS SALDO_ANTERIOR,
+            cli.debe AS DEBE,
+            cli.haber AS HABER,
+            cli.saldo_actual AS SALDO_ACTUAL,
+            cli.estado AS ESTADO,
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_cliente = cli.id_cliente),0) AS CONTEO
+         FROM
+            clientes cli"
       );
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
