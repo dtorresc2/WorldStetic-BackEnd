@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             u.password AS PASSWORD,
             u.estado AS ESTADO,
             u.admin AS ADMIN,
-            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_usuario = u.id_usuario),0) AS NO_DETALLES
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_usuario = u.id_usuario),0) AS NO_FACTURAS
          FROM usuarios u
          WHERE u.id_usuario=:id"
       );
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             u.password AS PASSWORD,
             u.estado AS ESTADO,
             u.admin AS ADMIN,
-            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_usuario = u.id_usuario),0) AS NO_DETALLES
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_usuario = u.id_usuario),0) AS NO_FACTURAS
          FROM usuarios u"
       );
       $sql->execute();
