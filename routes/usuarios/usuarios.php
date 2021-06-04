@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
    if (isset($_GET['id'])) {
       //Mostrar un post
       $sql = $dbConn->prepare(
-         "SELECT SELECT
+         "SELECT
             u.id_usuario AS ID_USUARIO,
             u.usuario AS USUARIO,
             u.password AS PASSWORD,
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
    } else {
       //Mostrar lista de post
       $sql = $dbConn->prepare(
-         "SELECT SELECT
+         "SELECT
             u.id_usuario AS ID_USUARIO,
             u.usuario AS USUARIO,
             u.password AS PASSWORD,
@@ -200,3 +200,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 // exit();
 // https://stackoverflow.com/questions/8291712/using-clean-urls-in-restful-api
 // https://codigonaranja.com/crear-restful-web-service-php
+
+// SELECT
+//    u.id_usuario AS ID_USUARIO,
+//    u.usuario AS USUARIO,
+//    u.password AS PASSWORD,
+//    u.estado AS ESTADO,
+//    u.admin AS ADMIN,
+//    COUNT(f.id_usuario) AS CONTEO
+// FROM usuarios u
+// LEFT JOIN factura_encabezado f
+// ON u.id_usuario = f.id_usuario
+// GROUP BY u.id_usuario;
