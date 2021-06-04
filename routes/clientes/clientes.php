@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             cli.haber AS HABER,
             cli.saldo_actual AS SALDO_ACTUAL,
             cli.estado AS ESTADO,
-            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_cliente = cli.id_cliente),0) AS CONTEO
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_cliente = cli.id_cliente),0) AS NO_FACTURAS
          FROM
             clientes cli
             WHERE id_cliente=:id"
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             cli.haber AS HABER,
             cli.saldo_actual AS SALDO_ACTUAL,
             cli.estado AS ESTADO,
-            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_cliente = cli.id_cliente),0) AS CONTEO
+            IFNULL((SELECT COUNT(*) FROM factura_encabezado f WHERE f.id_cliente = cli.id_cliente),0) AS NO_FACTURAS
          FROM
             clientes cli"
       );
