@@ -131,14 +131,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                cargo_abono = :CARGO_ABONO, 
                descripcion = :DESCRIPCION,
                monto = :MONTO,
-               estado = :ESTADO
+               estado = :ESTADO,
+               iva = :IVA,
+               monto_sin_iva = :MONTO_SIN_IVA,
+               id_usuario = :ID_USUARIO
             WHERE id_movimiento = :ID_MOVIMIENTO";
 
+            $montoSinIva = ($input['MONTO'] / 1.12);
+            $IVA = ($input['MONTO'] * 0.12);
+
             $stmt = $dbConn->prepare($sql);
-            $stmt->bindParam(':CARGO_ABONO', $input['CARGO_ABONO'], PDO::PARAM_INT);
+            $stmt->bindParam(':CARGO_ABONO', $input['CARGO_ABONO'], PDO::PARAM_STR);
             $stmt->bindParam(':DESCRIPCION', $input['DESCRIPCION'], PDO::PARAM_STR);
             $stmt->bindParam(':MONTO', $input['MONTO'], PDO::PARAM_INT);
             $stmt->bindParam(':ESTADO', $input['ESTADO'], PDO::PARAM_INT);
+            $stmt->bindParam(':IVA', $IVA, PDO::PARAM_INT);
+            $stmt->bindParam(':MONTO_SIN_IVA', $montoSinIva, PDO::PARAM_INT);
+            $stmt->bindParam(':ID_USUARIO', $input['ID_USUARIO'], PDO::PARAM_INT);
             $stmt->bindParam(':ID_MOVIMIENTO', $input['ID_MOVIMIENTO'], PDO::PARAM_INT);
             $stmt->execute();
 
@@ -146,6 +155,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $mensaje['ESTADO'] = 1;
             $mensaje['MENSAJE'] = "Actualizado Correctamente";
+            $mensaje['ID'] = $input['ID_MOVIMIENTO'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
+
+         case 'eliminar':
+            $sql = "DELETE FROM factura_movimiento
+            WHERE id_movimiento = :ID_MOVIMIENTO";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_MOVIMIENTO', $input['ID_MOVIMIENTO'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Eliminado Correctamente";
             $mensaje['ID'] = $input['ID_MOVIMIENTO'];
 
             echo json_encode($mensaje);
