@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      id_factura AS ID_FACTURA,
                      cargo_abono AS CARGO_ABONO,
                      DATE_FORMAT(fecha, '%d/%m/%Y') AS FECHA,
+                     DATE_FORMAT(fecha_anulacion, '%d/%m/%Y') AS FECHA_ANULACION,
                      descripcion AS DESCRIPCION,
                      monto AS MONTO,
                      iva AS IVA,
@@ -105,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      id_factura AS ID_FACTURA,
                      cargo_abono AS CARGO_ABONO,
                      DATE_FORMAT(fecha, '%d/%m/%Y') AS FECHA,
+                     DATE_FORMAT(fecha_anulacion, '%d/%m/%Y') AS FECHA_ANULACION,
                      descripcion AS DESCRIPCION,
                      monto AS MONTO,
                      iva AS IVA,
@@ -163,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
          case 'eliminar':
             $sql = "DELETE FROM factura_movimiento
-            WHERE id_movimiento = :ID_MOVIMIENTO";
+               WHERE id_movimiento = :ID_MOVIMIENTO";
 
             $stmt = $dbConn->prepare($sql);
             $stmt->bindParam(':ID_MOVIMIENTO', $input['ID_MOVIMIENTO'], PDO::PARAM_INT);
@@ -173,6 +175,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $mensaje['ESTADO'] = 1;
             $mensaje['MENSAJE'] = "Eliminado Correctamente";
+            $mensaje['ID'] = $input['ID_MOVIMIENTO'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
+
+         case 'anular':
+            $sql = "UPDATE factura_movimiento SET 
+               estado = 0,
+               fecha_anulacion = (SELECT CONVERT_TZ(now(),'+00:00','-06:00'))
+            WHERE id_movimiento = :ID_MOVIMIENTO";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_MOVIMIENTO', $input['ID_MOVIMIENTO'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Anulado Correctamente";
+            $mensaje['ID'] = $input['ID_MOVIMIENTO'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
+
+         case 'habilitar':
+            $sql = "UPDATE factura_movimiento SET 
+               estado = 1
+               WHERE id_movimiento = :ID_MOVIMIENTO";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_MOVIMIENTO', $input['ID_MOVIMIENTO'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Habilitado Correctamente";
             $mensaje['ID'] = $input['ID_MOVIMIENTO'];
 
             echo json_encode($mensaje);

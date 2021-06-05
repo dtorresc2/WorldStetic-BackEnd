@@ -366,8 +366,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
          case 'habilitar':
             $sql = "UPDATE factura_encabezado SET 
-                  estado = 1
-               WHERE id_factura = :ID_FACTURA";
+               estado = 1
+            WHERE id_factura = :ID_FACTURA";
 
             $stmt = $dbConn->prepare($sql);
             $stmt->bindParam(':ID_FACTURA', $input['ID_FACTURA'], PDO::PARAM_INT);
