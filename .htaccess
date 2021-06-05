@@ -9,7 +9,6 @@ RewriteRule usuarios routes/usuarios/usuarios.php [QSA,NC,L]
 #RewriteRule ^usuarios/pass/([0-9]+)$ routes/usuarios/cambioPass.php?id=$1  [QSA,NC,L]
 #RewriteRule usuarios/auth routes/usuarios/autenticacion.php [QSA,NC,L]
 
-
 #Ruta para servicios
 RewriteRule ^servicios/([0-9]+)$ routes/servicios/servicios.php?id=$1 [QSA,NC,L]
 #RewriteRule ^servicios/(.*)$ routes/servicios/servicios.php?id=$1 [QSA,NC,L]
