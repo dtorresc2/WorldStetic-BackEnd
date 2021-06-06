@@ -144,6 +144,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode($mensaje);
             exit();
             break;
+
+         case 'eliminar':
+            $sql = "DELETE FROM compras
+            WHERE id_compra = :ID_COMPRA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_COMPRA', $input['ID_COMPRA'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Eliminado Correctamente";
+            $mensaje['ID'] = $input['ID_COMPRA'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
       }
    }
 }
