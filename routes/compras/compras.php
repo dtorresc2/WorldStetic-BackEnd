@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   "SELECT 
                      id_compra AS ID_COMPRA,
                      DATE_FORMAT(fecha, '%d/%m/%Y') AS FECHA,
+                     DATE_FORMAT(fecha_anulacion, '%d/%m/%Y') AS FECHA_ANULACION,
                      descripcion AS DESCRIPCION,
                      monto AS MONTO,
                      iva AS IVA,
@@ -94,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   "SELECT 
                      id_compra AS ID_COMPRA,
                      DATE_FORMAT(fecha, '%d/%m/%Y') AS FECHA,
+                     DATE_FORMAT(fecha_anulacion, '%d/%m/%Y') AS FECHA_ANULACION,
                      descripcion AS DESCRIPCION,
                      monto AS MONTO,
                      iva AS IVA,
@@ -157,6 +159,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $mensaje['ESTADO'] = 1;
             $mensaje['MENSAJE'] = "Eliminado Correctamente";
+            $mensaje['ID'] = $input['ID_COMPRA'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
+
+         case 'anular':
+            $sql = "UPDATE compras SET 
+                  estado = 0,
+                  fecha_anulacion = (SELECT CONVERT_TZ(now(),'+00:00','-06:00'))
+               WHERE id_compra = :ID_COMPRA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_COMPRA', $input['ID_COMPRA'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Anulado Correctamente";
+            $mensaje['ID'] = $input['ID_COMPRA'];
+
+            echo json_encode($mensaje);
+            exit();
+            break;
+
+         case 'habilitar':
+            $sql = "UPDATE compras SET 
+                  estado = 1
+               WHERE id_compra = :ID_COMPRA";
+
+            $stmt = $dbConn->prepare($sql);
+            $stmt->bindParam(':ID_COMPRA', $input['ID_COMPRA'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            header("HTTP/1.1 200 OK");
+
+            $mensaje['ESTADO'] = 1;
+            $mensaje['MENSAJE'] = "Habilitado Correctamente";
             $mensaje['ID'] = $input['ID_COMPRA'];
 
             echo json_encode($mensaje);

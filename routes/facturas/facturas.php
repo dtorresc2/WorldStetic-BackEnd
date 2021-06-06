@@ -193,6 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      fact.monto_sin_iva AS MONTO_SIN_IVA,
                      DATE_FORMAT(fact.fecha_creacion, '%d/%m/%Y') AS FECHA_CREACION,
                      DATE_FORMAT(fact.fecha_emision, '%d/%m/%Y') AS FECHA_EMISION,
+                     DATE_FORMAT(fact.fecha_anulacion, '%d/%m/%Y') AS FECHA_ANULACION,
                      fact.estado AS ESTADO,
                      fact.contado_credito AS CONTADO_CREDITO,
                      fact.saldo_anterior AS SALDO_ANTERIOR,
